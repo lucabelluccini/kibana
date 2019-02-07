@@ -61,6 +61,7 @@ export default function (kibana) {
         healthCheck: Joi.object({
           delay: Joi.number().default(2500)
         }).default(),
+        generateIdPerRequest: Joi.boolean().default(false),
       }).default();
     },
 

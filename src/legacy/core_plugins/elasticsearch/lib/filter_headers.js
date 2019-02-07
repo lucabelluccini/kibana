@@ -20,16 +20,19 @@
 import _ from 'lodash';
 
 export default function (originalHeaders, headersToKeep) {
-  const normalizeHeader = function (header) {
-    if (!header) {
+  const normalizeHeader = function (key) {
+    if (!key) {
       return '';
     }
-    header = header.toString();
-    return header.trim().toLowerCase();
+    key = key.toString();
+    return key.trim().toLowerCase();
   };
 
   // Normalize list of headers we want to allow in upstream request
   const headersToKeepNormalized = headersToKeep.map(normalizeHeader);
+  const normalizedHeaderCompare = function (headerValue, headerKey) {
+    return _.includes(headersToKeepNormalized, normalizeHeader(headerKey));
+  };
 
-  return _.pick(originalHeaders, headersToKeepNormalized);
+  return _.pick(originalHeaders, normalizedHeaderCompare);
 }

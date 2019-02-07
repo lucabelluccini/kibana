@@ -32,6 +32,9 @@
 # that connects to this Kibana instance.
 #elasticsearch.preserveHost: true
 
+
+elasticsearch.generateIdPerRequest: true
+
 # Kibana uses an index in Elasticsearch to store saved searches, visualizations and
 # dashboards. Kibana creates a new index if the index doesn't already exist.
 #kibana.index: ".kibana"
@@ -87,7 +90,7 @@
 #elasticsearch.startupTimeout: 5000
 
 # Logs queries sent to Elasticsearch. Requires logging.verbose set to true.
-#elasticsearch.logQueries: false
+elasticsearch.logQueries: true
 
 # Specifies the path where Kibana creates the process ID file.
 #pid.file: /var/run/kibana.pid
@@ -99,11 +102,11 @@
 #logging.silent: false
 
 # Set the value of this setting to true to suppress all logging output other than error messages.
-#logging.quiet: false
+logging.quiet: false
 
 # Set the value of this setting to true to log all events, including system usage information
 # and all requests.
-#logging.verbose: false
+logging.verbose: true
 
 # Set the interval in milliseconds to sample system and process performance
 # metrics. Minimum is 100ms. Defaults to 5000.

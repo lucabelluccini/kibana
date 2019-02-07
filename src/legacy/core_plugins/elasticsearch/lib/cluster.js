@@ -43,8 +43,13 @@ export class Cluster {
   }
 
   callWithRequest = (req = {}, endpoint, clientParams = {}, options = {}) => {
+    if (this.getGenerateIdPerRequest()) {
+      req.headers = req.headers || {};
+      req.headers['X-Opaque-Id'] = Math.random().toString(36).substring(2, 15);
+    }
+
     if (req.headers) {
-      const filteredHeaders = filterHeaders(req.headers, this.getRequestHeadersWhitelist());
+      const filteredHeaders = filterHeaders(req.headers, this.getRequestHeadersWhitelist().concat(['X-Opaque-Id']));
       set(clientParams, 'headers', filteredHeaders);
     }
 
@@ -52,8 +57,15 @@ export class Cluster {
   }
 
   callWithInternalUser = (endpoint, clientParams = {}, options = {}) => {
+    if (this.getGenerateIdPerRequest()) {
+      const headers = { 'X-Opaque-Id': Math.random().toString(36).substring(2, 15) };
+      set(clientParams, 'headers', headers);
+    }
+
     return callAPI(this._client, endpoint, clientParams, options);
   }
+
+  getGenerateIdPerRequest = () => getClonedProperty(this._config, 'generateIdPerRequest');
 
   getRequestHeadersWhitelist = () => getClonedProperty(this._config, 'requestHeadersWhitelist');
 

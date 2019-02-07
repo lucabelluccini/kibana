@@ -95,7 +95,13 @@ export default function (kibana) {
         pathFilters: proxyPathFilters,
         getConfigForReq(req, uri) {
           const whitelist = config.get('elasticsearch.requestHeadersWhitelist');
-          const filteredHeaders = filterHeaders(req.headers, whitelist);
+          const generateIdPerRequest = config.get('elasticsearch.generateIdPerRequest');
+          const idPerRequest = generateIdPerRequest ? ['X-Opaque-Id'] : [];
+          if (generateIdPerRequest) {
+            req.headers = req.headers || {};
+            req.headers['X-Opaque-Id'] = Math.random().toString(36).substring(2, 15);
+          }
+          const filteredHeaders = filterHeaders(req.headers, whitelist.concat(idPerRequest));
           const headers = setHeaders(filteredHeaders, config.get('elasticsearch.customHeaders'));
 
           if (!isEmpty(config.get('console.proxyConfig'))) {

@@ -36,7 +36,8 @@ export function clientLogger(server) {
       /* Check if query logging is enabled
        * It requires Kibana to be configured with verbose logging turned on. */
       if (this.logQueries) {
-        const methodAndPath = `${method} ${options.path}`;
+        const requestId = options.headers['x-opaque-id'] || '';
+        const methodAndPath = `${method} ${options.path} ${requestId}`;
         const queryDsl = query ? query.trim() : '';
         server.log(['elasticsearch', 'query', 'debug'].concat(this.tags), [
           statusCode,
