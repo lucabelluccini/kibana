@@ -150,7 +150,7 @@ export const AgentRequestDiagnosticsModal: React.FunctionComponent<Props> = ({
         label={
           <FormattedMessage
             id="xpack.fleet.requestDiagnostics.includeEventsLogCheckboxLabel"
-            defaultMessage="Include Events Logs (might contain sensible information)"
+            defaultMessage="Include Events Logs (might contain sensitive information)"
           />
         }
         checked={includeEventsLogEnabled}
